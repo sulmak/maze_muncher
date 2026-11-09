@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- "./" keeps every asset path relative, which Instant Games needs because
+       the game is served from a Facebook-hosted folder, not from "/". -->
+  <base href="./">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Maze Muncher - a maze chase game with 30 stages.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Maze Muncher">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Maze Muncher</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body { margin: 0; height: 100%; background: #0B0B1A; overflow: hidden; }
+  </style>
+
+  <!-- Facebook Instant Games SDK. Must come from Facebook's CDN (never bundle a copy). -->
+  <script src="https://connect.facebook.net/en_US/fbinstant.8.0.js"></script>
+</head>
+<body>
+  <script>
+    // Start Flutter only after the Instant Games SDK is ready and the game has started.
+    function startFlutter() {
+      var s = document.createElement('script');
+      s.src = 'flutter_bootstrap.js';
+      s.async = true;
+      document.body.appendChild(s);
+    }
+
+    if (window.FBInstant) {
+      FBInstant.initializeAsync()
+        .then(function () {
+          FBInstant.setLoadingProgress(100);
+          return FBInstant.startGameAsync();
+        })
+        .then(startFlutter)
+        .catch(function (e) {
+          console.error('FBInstant error', e);
+          startFlutter();
+        });
+    } else {
+      // SDK not available (e.g. running locally): just start the game.
+      startFlutter();
+    }
+  </script>
+</body>
+</html>
